@@ -1,5 +1,12 @@
 {
 	"name": "kontrapunkt_shared",
 	"version": "0.1.0",
-	"exports": "./index.ts"
+	"exports": "./index.ts",
+	"description": "Shared configuration files and utilities for Kontrapunkt projects",
+	"author": "Kontrapunkt",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kontrapunkt/shared"
+	}
 }

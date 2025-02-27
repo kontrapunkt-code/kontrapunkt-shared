@@ -29,57 +29,73 @@ async function prompt(question: string): Promise<string> {
 	});
 }
 
-// Main script execution
-const args = process.argv.slice(2);
-const files = args.filter((arg) => !arg.startsWith("-"));
-const targetDir = process.cwd();
+/**
+ * Copy shared configuration files to a target directory
+ * @param files Optional array of specific files to copy. If empty, all files will be copied.
+ * @param targetDirectory Optional target directory. Defaults to current working directory.
+ * @param interactive Whether to prompt for confirmation before copying each file. Defaults to true.
+ * @returns Array of copied file paths
+ */
+export async function copySharedFiles(
+	files: string[] = [],
+	targetDirectory: string = process.cwd(),
+	interactive: boolean = true,
+): Promise<string[]> {
+	// Find files to process
+	let foundFiles: string[] = [];
 
-// Find files to process
-let foundFiles: string[] = [];
+	// If no files specified, copy all files from shared directory
+	if (files.length === 0) {
+		try {
+			// Check if the shared directory exists
+			const dir = Bun.file(sharedDir);
 
-// If no files specified, copy all files from shared directory
-if (files.length === 0) {
-	try {
-		// Check if the shared directory exists
-		const dir = Bun.file(sharedDir);
+			if (!(await dir.exists())) {
+				throw new Error(`Shared directory not found: ${sharedDir}`);
+			}
 
-		if (!(await dir.exists())) {
-			console.error(`Shared directory not found: ${sharedDir}`);
-			process.exit(1);
+			// Use Glob to find all files in the directory
+			const glob = new Glob("*");
+			// scanSync returns full paths
+			foundFiles = Array.from(glob.scanSync(sharedDir));
+		} catch (error) {
+			console.error("Error reading shared directory:", error);
+			throw error;
 		}
-
-		// Use Glob to find all files in the directory
-		const glob = new Glob("*");
-		// scanSync returns full paths
-		foundFiles = Array.from(glob.scanSync(sharedDir));
-	} catch (error) {
-		console.error("Error reading shared directory:", error);
-		process.exit(1);
+	} else {
+		// When specific files are provided, construct full paths
+		foundFiles = files.map((file) => join(sharedDir, file));
 	}
-} else {
-	// When specific files are provided, construct full paths
-	foundFiles = files.map((file) => join(sharedDir, file));
-}
 
-// Process each file interactively
-(async () => {
+	const copiedFiles: string[] = [];
+
+	// Process each file
 	for (const fullPath of foundFiles) {
 		const fileName = fullPath.split("/").pop() as string;
 
-		// Ask if user wants to copy this file
-		const copyResponse = await prompt(`Copy "${fileName}"? (y/n): `);
-		if (
-			copyResponse.toLowerCase() !== "y"
-			&& copyResponse.toLowerCase() !== "yes"
-		) {
-			console.log(`Skipped ${fileName}`);
-			continue;
+		// Ask if user wants to copy this file when in interactive mode
+		let shouldCopy = true;
+		if (interactive) {
+			const copyResponse = await prompt(`Copy "${fileName}"? (y/n): `);
+			shouldCopy =
+				copyResponse.toLowerCase() === "y"
+				|| copyResponse.toLowerCase() === "yes";
+
+			if (!shouldCopy) {
+				console.log(`Skipped ${fileName}`);
+				continue;
+			}
 		}
 
-		// Ask where to copy the file
-		const defaultPath = join(targetDir, fileName);
-		const customPath = await prompt(`Destination (default: ${defaultPath}): `);
-		const finalPath = customPath.trim() || defaultPath;
+		// Ask where to copy the file when in interactive mode
+		let finalPath = join(targetDirectory, fileName);
+		if (interactive) {
+			const defaultPath = finalPath;
+			const customPath = await prompt(
+				`Destination (default: ${defaultPath}): `,
+			);
+			finalPath = customPath.trim() || defaultPath;
+		}
 
 		try {
 			const sourceFile = Bun.file(fullPath);
@@ -99,8 +115,23 @@ if (files.length === 0) {
 			// Write to the target location
 			await Bun.write(finalPath, content);
 			console.log(`Copied ${fileName} to ${finalPath}`);
+			copiedFiles.push(finalPath);
 		} catch (error) {
 			console.error(`Error copying ${fileName}:`, error);
 		}
+	}
+
+	return copiedFiles;
+}
+
+// Main script execution
+const args = process.argv.slice(2);
+const files = args.filter((arg) => !arg.startsWith("-"));
+const targetDir = process.cwd();
+
+// Process each file interactively
+(async () => {
+	if (import.meta.main) {
+		await copySharedFiles(files, targetDir, true);
 	}
 })();

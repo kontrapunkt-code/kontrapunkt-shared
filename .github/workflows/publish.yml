@@ -8,7 +8,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
@@ -19,13 +19,13 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "20.x"
           registry-url: "https://registry.npmjs.org"
       - run: bun install
       - run: bun run build
@@ -36,16 +36,14 @@ jobs:
   publish-deno:
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
       - name: Publish to Deno Land
-        run: |
-          deno install -A -n eggs https://x.nest.land/eggs@0.3.10/eggs.ts
-          eggs link ${{ secrets.DENO_API_KEY }}
-          eggs publish --yes
-        env:
-          DENO_API_KEY: ${{ secrets.DENO_API_KEY }}
+        run: npx jsr publish
