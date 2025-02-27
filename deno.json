@@ -1,7 +1,10 @@
 {
 	"name": "kontrapunkt_shared",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"exports": "./index.ts",
+	"tasks": {
+		"check": "deno check index.ts"
+	},
 	"description": "Shared configuration files and utilities for Kontrapunkt projects",
 	"author": "Kontrapunkt",
 	"license": "MIT",

@@ -1,31 +1,27 @@
-#!/usr/bin/env bun
-import { Glob } from "bun";
+#!/usr/bin/env node
+import * as fs from "node:fs";
 import { mkdir } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
+import { createInterface } from "node:readline";
 
 // Get the directory where the package is installed
-const __dirname = dirname(import.meta.dir);
-const sharedDir = join(__dirname, "shared");
+const packageDir = dirname(new URL(import.meta.url).pathname);
+const sharedDir = join(packageDir, "shared");
 
 /**
  * Simple prompt function for user input
  */
 async function prompt(question: string): Promise<string> {
+	const rl = createInterface({
+		input: process.stdin,
+		output: process.stdout,
+	});
+
 	return new Promise((resolve) => {
-		const { stdin, stdout } = process;
-
-		stdout.write(question);
-
-		const onData = (data: Buffer) => {
-			const response = data.toString().trim();
-			stdin.removeListener("data", onData);
-			stdin.pause();
-			resolve(response);
-		};
-
-		stdin.resume();
-		stdin.setEncoding("utf8");
-		stdin.on("data", onData);
+		rl.question(question, (answer) => {
+			rl.close();
+			resolve(answer.trim());
+		});
 	});
 }
 
@@ -48,16 +44,15 @@ export async function copySharedFiles(
 	if (files.length === 0) {
 		try {
 			// Check if the shared directory exists
-			const dir = Bun.file(sharedDir);
-
-			if (!(await dir.exists())) {
+			if (!fs.existsSync(sharedDir)) {
 				throw new Error(`Shared directory not found: ${sharedDir}`);
 			}
 
-			// Use Glob to find all files in the directory
-			const glob = new Glob("*");
-			// scanSync returns full paths
-			foundFiles = Array.from(glob.scanSync(sharedDir));
+			// Find all files in the directory
+			foundFiles = fs
+				.readdirSync(sharedDir)
+				.map((file) => join(sharedDir, file))
+				.filter((path) => fs.statSync(path).isFile());
 		} catch (error) {
 			console.error("Error reading shared directory:", error);
 			throw error;
@@ -71,15 +66,13 @@ export async function copySharedFiles(
 
 	// Process each file
 	for (const fullPath of foundFiles) {
-		const fileName = fullPath.split("/").pop() as string;
+		const fileName = basename(fullPath);
 
 		// Ask if user wants to copy this file when in interactive mode
 		let shouldCopy = true;
 		if (interactive) {
 			const copyResponse = await prompt(`Copy "${fileName}"? (y/n): `);
-			shouldCopy =
-				copyResponse.toLowerCase() === "y"
-				|| copyResponse.toLowerCase() === "yes";
+			shouldCopy = copyResponse.toLowerCase().startsWith("y");
 
 			if (!shouldCopy) {
 				console.log(`Skipped ${fileName}`);
@@ -94,26 +87,26 @@ export async function copySharedFiles(
 			const customPath = await prompt(
 				`Destination (default: ${defaultPath}): `,
 			);
-			finalPath = customPath.trim() || defaultPath;
+			finalPath = customPath || defaultPath;
 		}
 
 		try {
-			const sourceFile = Bun.file(fullPath);
-
-			if (!(await sourceFile.exists())) {
+			// Check if file exists
+			if (!fs.existsSync(fullPath)) {
 				console.warn(`File not found: ${fullPath}`);
 				continue;
 			}
 
 			// Read the file content
-			const content = await sourceFile.arrayBuffer();
+			const content = fs.readFileSync(fullPath);
 
 			// Create directory if it doesn't exist
 			const destDir = dirname(finalPath);
 			await mkdir(destDir, { recursive: true });
 
 			// Write to the target location
-			await Bun.write(finalPath, content);
+			fs.writeFileSync(finalPath, content);
+
 			console.log(`Copied ${fileName} to ${finalPath}`);
 			copiedFiles.push(finalPath);
 		} catch (error) {
@@ -125,13 +118,10 @@ export async function copySharedFiles(
 }
 
 // Main script execution
-const args = process.argv.slice(2);
-const files = args.filter((arg) => !arg.startsWith("-"));
-const targetDir = process.cwd();
+if (import.meta.main) {
+	const args = process.argv.slice(2);
+	const files = args.filter((arg) => !arg.startsWith("-"));
+	const targetDir = process.cwd();
 
-// Process each file interactively
-(async () => {
-	if (import.meta.main) {
-		await copySharedFiles(files, targetDir, true);
-	}
-})();
+	await copySharedFiles(files, targetDir, true);
+}

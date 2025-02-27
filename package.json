@@ -35,10 +35,11 @@
 	"scripts": {
 		"build": "bun build ./index.ts --outdir ./dist --target node && bun run build:types",
 		"build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
-		"prepublishOnly": "bun run build",
+		"prepublishOnly": "bun run sync-version && bun run build",
+		"sync-version": "node scripts/sync-version.js",
 		"test": "bun test"
 	},
 	"type": "module",
 	"types": "dist/index.d.ts",
-	"version": "0.1.4"
+	"version": "0.1.5"
 }
