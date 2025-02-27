@@ -33,8 +33,9 @@
 		"access": "public"
 	},
 	"scripts": {
-		"build": "bun build ./index.ts --outdir ./dist --target node && bun run build:types",
+		"build": "bun build ./index.ts --outdir ./dist --target node && bun run build:types && bun run copy-shared",
 		"build:types": "tsc --declaration --emitDeclarationOnly --outDir dist",
+		"copy-shared": "mkdir -p dist/shared && cp -r shared/. dist/shared/",
 		"prepublishOnly": "bun run sync-version && bun run build",
 		"sync-version": "node scripts/sync-version.js",
 		"test": "bun test"
