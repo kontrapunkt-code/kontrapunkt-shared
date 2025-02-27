@@ -1,6 +1,6 @@
 {
 	"name": "kontrapunkt_shared",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"exports": "./index.ts",
 	"description": "Shared configuration files and utilities for Kontrapunkt projects",
 	"author": "Kontrapunkt",
