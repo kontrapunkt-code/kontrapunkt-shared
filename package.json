@@ -5,6 +5,7 @@
 	},
 	"description": "Shared configuration files and utilities for Kontrapunkt projects built with 100% Bun APIs",
 	"devDependencies": {
+		"@types/node": "^22.13.5",
 		"typescript": "^5.7.3"
 	},
 	"engines": {
@@ -38,5 +39,5 @@
 	},
 	"type": "module",
 	"types": "dist/index.d.ts",
-	"version": "0.1.9"
+	"version": "0.1.10"
 }
