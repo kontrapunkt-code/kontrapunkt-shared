@@ -16,12 +16,6 @@ npm install @kontrapunkt/shared
 bun add @kontrapunkt/shared
 ```
 
-### Deno
-
-```ts
-import { copySharedFiles } from "https://deno.land/x/kontrapunkt_shared/index.ts";
-```
-
 ## Usage
 
 ### Copying shared files and directories
@@ -88,11 +82,16 @@ This package is built using cross-platform JavaScript APIs:
 
 - Uses Node.js fs module for file operations
 - Uses Node.js path module for path manipulations
-- Compatible with Node.js, Bun, and Deno runtimes
+- Compatible with Node.js and Bun runtimes
 
 ## Publishing
 
-The package is automatically published to npm and Deno via GitHub Actions when a new release is created.
+To publish a new version of the package:
+
+```bash
+# Run tests, build, and publish to npm
+npm run publish
+```
 
 ## License
 
