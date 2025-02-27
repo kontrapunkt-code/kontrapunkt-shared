@@ -1,0 +1,51 @@
+name: Publish Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - run: bun install
+      - run: bun test
+
+  publish-npm:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+      - run: bun install
+      - run: bun run build
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  publish-deno:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: Publish to Deno Land
+        run: |
+          deno install -A -n eggs https://x.nest.land/eggs@0.3.10/eggs.ts
+          eggs link ${{ secrets.DENO_API_KEY }}
+          eggs publish --yes
+        env:
+          DENO_API_KEY: ${{ secrets.DENO_API_KEY }}

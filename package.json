@@ -1,11 +1,42 @@
 {
-  "name": "kontrapunkt-shared",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  }
+	"author": "Kontrapunkt",
+	"bin": {
+		"kp-shared": "dist/index.js"
+	},
+	"description": "Shared configuration files and utilities for Kontrapunkt projects built with 100% Bun APIs",
+	"devDependencies": {
+		"@types/bun": "latest",
+		"prettier": "^3.5.2"
+	},
+	"engines": {
+		"bun": ">=1.0.0"
+	},
+	"files": [
+		"dist",
+		"shared"
+	],
+	"keywords": [
+		"kontrapunkt",
+		"shared",
+		"config",
+		"bun"
+	],
+	"license": "MIT",
+	"main": "dist/index.js",
+	"module": "index.ts",
+	"name": "@kontrapunkt/shared",
+	"peerDependencies": {
+		"bun": ">=1.0.0"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "bun build ./index.ts --outdir ./dist --target node",
+		"prepublishOnly": "bun run build",
+		"test": "bun test"
+	},
+	"type": "module",
+	"types": "dist/index.d.ts",
+	"version": "0.1.0"
 }

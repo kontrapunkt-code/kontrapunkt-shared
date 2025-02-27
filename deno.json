@@ -1,0 +1,5 @@
+{
+	"name": "kontrapunkt_shared",
+	"version": "0.1.0",
+	"exports": "./index.ts"
+}

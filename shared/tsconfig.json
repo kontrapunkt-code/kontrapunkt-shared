@@ -1,0 +1,29 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"checkJs": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"noUncheckedIndexedAccess": true,
+		"outDir": "./dist",
+		"paths": {
+			"@/*": ["src/*"]
+		},
+		"plugins": [
+			{
+				"name": "@astrojs/ts-plugin"
+			}
+		],
+		"removeComments": true,
+		"target": "ES2021",
+		"useDefineForClassFields": false,
+		"verbatimModuleSyntax": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js"
+	},
+	"exclude": ["dist"],
+	"extends": "astro/tsconfigs/strict",
+	"include": [".astro/types.d.ts", "**/*"]
+}
