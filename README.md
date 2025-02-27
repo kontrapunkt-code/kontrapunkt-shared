@@ -1,28 +1,19 @@
 # @kontrapunkt/shared
 
-A collection of shared configuration files and utilities for Kontrapunkt projects. Built with pure Bun APIs for maximum performance.
-
-## Requirements
-
-This package requires [Bun](https://bun.sh) as a runtime.
-
-```bash
-# Install Bun if you don't have it
-curl -fsSL https://bun.sh/install | bash
-```
+A collection of shared configuration files, directories, and utilities for Kontrapunkt projects. Built with cross-platform JavaScript APIs for maximum compatibility.
 
 ## Installation
-
-### Bun (recommended)
-
-```bash
-bun add @kontrapunkt/shared
-```
 
 ### npm
 
 ```bash
 npm install @kontrapunkt/shared
+```
+
+### Bun
+
+```bash
+bun add @kontrapunkt/shared
 ```
 
 ### Deno
@@ -33,18 +24,18 @@ import { copySharedFiles } from "https://deno.land/x/kontrapunkt_shared/index.ts
 
 ## Usage
 
-### Copying configuration files
+### Copying shared files and directories
 
-You can copy shared configuration files to your project in several ways:
+You can copy shared configuration files and directories to your project in several ways:
 
 #### Option 1: Using the CLI
 
 ```bash
-# Copy all shared files
-bunx kp-shared
+# Copy all shared files and directories
+npx kp-shared
 
-# Copy specific files
-bunx kp-shared .prettierrc .eslintrc
+# Copy specific files or directories
+npx kp-shared .prettierrc components
 ```
 
 #### Option 2: Using the API in your scripts
@@ -53,42 +44,51 @@ bunx kp-shared .prettierrc .eslintrc
 // ES Modules
 import { copySharedFiles } from "@kontrapunkt/shared";
 
-// Copy all shared files
+// Copy all shared files and directories
 await copySharedFiles();
 
-// Copy specific files
-await copySharedFiles([".prettierrc", ".eslintrc"]);
+// Copy specific files or directories
+await copySharedFiles([".prettierrc", "components"]);
 
 // Copy to a specific directory
 await copySharedFiles([], "/path/to/your/project");
+
+// Copy without interactive prompts
+await copySharedFiles([], "/path/to/your/project", false);
 ```
 
-### Available configuration files
+### Available shared resources
 
-The following configuration files are available in this package:
+The following configuration files and directories are available in this package:
 
-- `.prettierrc` - Prettier configuration
-- `.eslintrc` - ESLint configuration
-- `.cursorrules` - Cursor editor configuration
-- `tsconfig.json` - TypeScript configuration
+- Configuration files:
+  - `.prettierrc` - Prettier configuration
+  - `.eslintrc` - ESLint configuration
+  - `.cursorrules` - Cursor editor configuration
+  - `tsconfig.json` - TypeScript configuration
+  - `.nvmrc` - Node version configuration
+  - `biome.json` - Biome configuration
+
+- Directories:
+  - Any directories uploaded to the `shared` folder will be copied with their entire structure
 
 ## Development
 
 ```bash
 # Install dependencies
-bun install
+npm install
 
 # Build the package
-bun run build
+npm run build
 ```
 
 ## Technical Details
 
-This package is built using 100% Bun APIs:
+This package is built using cross-platform JavaScript APIs:
 
-- Uses Bun's Glob API for directory listing
-- Uses Bun's file API for reading and writing files
-- Optimized for performance with Bun's runtime
+- Uses Node.js fs module for file operations
+- Uses Node.js path module for path manipulations
+- Compatible with Node.js, Bun, and Deno runtimes
 
 ## Publishing
 

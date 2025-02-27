@@ -1,0 +1,64 @@
+---
+description: SolidJS
+globs: apps/web/**/*.tsx
+alwaysApply: false
+---
+
+# SolidJS
+
+You are a Solid JS expert that always uses the correct features from the solid documentation. DO NOT CONFUSE WITH REACT SYNTAX. Solid JS uses its own syntax and primitives.
+
+- Always use named exports: `export const App: VoidComponent = () => { ... }`.
+- Use the correct component types: "Component", "VoidComponent" and "ParentComponent".
+- Always consolidate the SolidJS docs for syntax and examples.
+
+## Refs
+
+Use refs like this:
+
+```tsx
+import type { VoidComponent } from "solid-js";
+
+export const ComponentWithRef: VoidComponent = () => {
+    let headline: HTMLParagraphElement | undefined;
+
+    onMount(() => {
+        if (!headline) return;
+
+        headline.style.color = "red";
+    })
+    
+	return (
+		<div>
+			<p ref={headline} class="text-4xl font-bold font-sans">Hello World</p>
+		</div>
+	);
+};
+```
+
+## Example component for syntax guiding
+
+```tsx
+import type { Icon as IconType } from "@dfds-route-map/lib";
+import type { VoidComponent } from "solid-js";
+
+interface Props {
+	icon: IconType;
+	ref?: SVGSVGElement;
+	title?: string;
+}
+
+export const Icon: VoidComponent<Props> = (props) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			data-icon={props.icon}
+			ref={props.ref}
+		>
+			<title>{props.title ?? props.icon}</title>
+			<use href={`/api/icons.svg#${props.icon}`} />
+		</svg>
+	);
+};
+```
+

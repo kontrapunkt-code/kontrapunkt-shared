@@ -1,0 +1,30 @@
+---
+description: Astro
+globs: *.astro
+---
+
+# Astro
+
+- Follow Astro's newest documentation.
+- Always use frontmatter and remember that it is in a server context.
+
+## Example component
+
+```astro
+---
+import type { GLOBAL_SETTINGS_QUERYResult } from "@novo-holdings-annual-report-2024/studio/types";
+
+interface Props {
+	settings: GLOBAL_SETTINGS_QUERYResult;
+}
+
+const { settings } = Astro.props;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="w-full py-8 px-6 bg-gray-50 mt-16">
+	<div class="max-w-7xl mx-auto text-center text-gray-600">
+		<p>&copy; {currentYear} {settings?.globalTitle}</p>
+	</div>
+</footer>
+```

@@ -1,0 +1,163 @@
+---
+description: 
+globs: 
+---
+# Project Structure
+
+```
+.
+├── .cursor
+│   └── rules
+│       ├── agent.mdc
+│       ├── astro.mdc
+│       ├── motion.mdc
+│       ├── sanity.mdc
+│       ├── solidjs.mdc
+│       ├── structure.mdc
+│       └── tailwind.mdc
+├── .cursorrules
+├── .gitignore
+├── .nvmrc
+├── .prettierignore
+├── .scripts
+│   └── update_structure.sh
+├── README.md
+├── apps
+│   ├── lib
+│   │   ├── generate-svg-types.ts
+│   │   ├── index.ts
+│   │   ├── package.json
+│   │   ├── svgo.config.mjs
+│   │   ├── svgs
+│   │   │   ├── arrow_back.svg
+│   │   │   ├── arrow_forward.svg
+│   │   │   ├── arrow_outward.svg
+│   │   │   ├── close.svg
+│   │   │   └── download.svg
+│   │   └── tsconfig.json
+│   ├── studio
+│   │   ├── .gitignore
+│   │   ├── README.md
+│   │   ├── eslint.config.mjs
+│   │   ├── lib
+│   │   │   ├── index.ts
+│   │   │   ├── playground.ts
+│   │   │   ├── queries.ts
+│   │   │   └── structure.ts
+│   │   ├── package.json
+│   │   ├── sanity.cli.ts
+│   │   ├── sanity.config.ts
+│   │   ├── schemas
+│   │   │   ├── case.ts
+│   │   │   ├── global-settings.ts
+│   │   │   ├── image-combo.ts
+│   │   │   ├── index.ts
+│   │   │   ├── modules
+│   │   │   │   ├── article-figure.ts
+│   │   │   │   ├── article-gallery.ts
+│   │   │   │   ├── article-quote.ts
+│   │   │   │   ├── article-stats.ts
+│   │   │   │   ├── article-text.ts
+│   │   │   │   ├── at-a-glance.ts
+│   │   │   │   ├── case-highlights.ts
+│   │   │   │   ├── highlights.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   ├── news.ts
+│   │   │   │   └── side-by-side.ts
+│   │   │   └── page.ts
+│   │   ├── tsconfig.json
+│   │   └── typegen
+│   │       ├── sanity-typegen.json
+│   │       ├── sanity.types.ts
+│   │       └── schema.json
+│   └── web
+│       ├── .env.example
+│       ├── .gitignore
+│       ├── astro.config.mjs
+│       ├── package.json
+│       ├── public
+│       │   ├── favicon.svg
+│       │   ├── fonts
+│       │   │   ├── NovoApplySans-Bd.woff2
+│       │   │   ├── NovoApplySans-BdIt.woff2
+│       │   │   ├── NovoApplySans-It.woff2
+│       │   │   ├── NovoApplySans-Lt.woff2
+│       │   │   ├── NovoApplySans-Md.woff2
+│       │   │   ├── NovoApplySans-Rg.woff2
+│       │   │   ├── NovoApplySans-Th.woff2
+│       │   │   ├── NovoApplySans-Xb.woff2
+│       │   │   ├── NovoApplySans-XbIt.woff2
+│       │   │   ├── NovoApplySans-Xl.woff2
+│       │   │   └── NovoApplySans-XlIt.woff2
+│       │   └── temp-images
+│       │       ├── Map_02.mp4
+│       │       ├── ceo.png
+│       │       ├── ellab-01.png
+│       │       ├── ellab-02.png
+│       │       ├── paratek-01.png
+│       │       ├── report-01.png
+│       │       └── report-02.png
+│       ├── src
+│       │   ├── components
+│       │   │   ├── astro
+│       │   │   │   ├── CardSummary.astro
+│       │   │   │   ├── CaseCard.astro
+│       │   │   │   ├── Footer.astro
+│       │   │   │   ├── Header.astro
+│       │   │   │   ├── HeroCase.astro
+│       │   │   │   ├── HighlightsModule.astro
+│       │   │   │   ├── Icon.astro
+│       │   │   │   ├── PrimaryButton.astro
+│       │   │   │   ├── Router.astro
+│       │   │   │   ├── SanityImage.astro
+│       │   │   │   └── SecondaryButton.astro
+│       │   │   ├── modules
+│       │   │   │   ├── ArticleFigureModule.astro
+│       │   │   │   ├── ArticleGalleryModule.astro
+│       │   │   │   ├── ArticleQuoteModule.astro
+│       │   │   │   ├── ArticleStatsModule.astro
+│       │   │   │   ├── ArticleTextModule.astro
+│       │   │   │   ├── AtAGlanceModule.astro
+│       │   │   │   ├── CaseHighlightsModule.astro
+│       │   │   │   ├── HighlightsModule.astro
+│       │   │   │   ├── NewsModule.astro
+│       │   │   │   └── SideBySideModule.astro
+│       │   │   └── solid
+│       │   │       ├── app.tsx
+│       │   │       ├── carousel.tsx
+│       │   │       ├── icon.tsx
+│       │   │       ├── lottie-grid.tsx
+│       │   │       └── lottie-player.tsx
+│       │   ├── env.d.ts
+│       │   ├── layouts
+│       │   │   ├── CaseLayout.astro
+│       │   │   ├── LandingLayout.astro
+│       │   │   ├── MainLayout.astro
+│       │   │   └── PageLayout.astro
+│       │   ├── pages
+│       │   │   ├── 404.astro
+│       │   │   ├── 500.astro
+│       │   │   ├── [slug].astro
+│       │   │   ├── api
+│       │   │   │   └── icons.svg.ts
+│       │   │   └── index.astro
+│       │   ├── scripts
+│       │   │   ├── const.ts
+│       │   │   ├── ease.ts
+│       │   │   ├── helpers.ts
+│       │   │   ├── linear-gradient.ts
+│       │   │   ├── page.ts
+│       │   │   ├── store.ts
+│       │   │   └── types.ts
+│       │   └── styles
+│       │       └── global.css
+│       └── tsconfig.json
+├── biome.json
+├── bun.lock
+├── netlify.toml
+├── package.json
+├── tsconfig.json
+└── turbo.json
+
+26 directories, 127 files
+```

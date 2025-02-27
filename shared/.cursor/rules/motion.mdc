@@ -1,0 +1,14 @@
+---
+description: Motion
+globs: apps/web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Motion
+
+- Use motion.dev's `animate()` function for animation.
+- Follow the docs of motion from motion.dev.
+- Use spring easings whereever possible.
+- Always use the latest version.
+- There is NO key called `easing` it is correctly called `ease`.
+- Always use duration in seconds with using the `animate()` method.

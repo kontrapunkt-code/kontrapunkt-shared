@@ -1,0 +1,13 @@
+---
+description: Tailwind CSS
+globs: apps/web/**/*.{tsx,css,astro}
+---
+
+# Tailwind CSS
+
+- Always use Tailwind version 4.0
+- Use CSS configuration with version 4.0 in [global.css](mdc:apps/web/src/styles/global.css)
+- Keep classes as short and tidy as possible.
+- Use mobile first design.
+- Only use the "md:" media query to differentiate between mobile and desktop.
+- If many components share the same classes, consider making a global class in [global.css](mdc:apps/web/src/styles/global.css) 
