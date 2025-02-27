@@ -1,6 +1,6 @@
 {
-	"name": "kontrapunkt_shared",
-	"version": "0.1.5",
+	"name": "@kontrapunkt/shared",
+	"version": "0.1.6",
 	"exports": "./index.ts",
 	"tasks": {
 		"check": "deno check index.ts"
