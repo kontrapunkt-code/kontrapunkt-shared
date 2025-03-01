@@ -26,10 +26,10 @@ You can copy shared configuration files and directories to your project in sever
 
 ```bash
 # Copy all shared files and directories
-npx kp-shared
+npx @kontrapunkt/shared
 
 # Copy specific files or directories
-npx kp-shared .prettierrc components
+npx @kontrapunkt/shared .prettierrc components
 ```
 
 #### Option 2: Using the API in your scripts

@@ -1,9 +1,9 @@
 {
 	"author": "Kontrapunkt",
 	"bin": {
-		"kp-shared": "dist/index.js"
+		"@kontrapunkt/shared": "dist/index.js"
 	},
-	"description": "Shared configuration files and utilities for Kontrapunkt projects built with 100% Bun APIs",
+	"description": "Shared configuration files, directories, and utilities for Kontrapunkt projects",
 	"devDependencies": {
 		"@types/bun": "^1.2.4",
 		"typescript": "^5.7.3"
