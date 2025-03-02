@@ -35,7 +35,7 @@ async function prompt(question: string): Promise<string> {
 export async function copySharedFiles(
 	files: string[] = [],
 	targetDirectory: string = process.cwd(),
-	interactive: boolean = true,
+	interactive = true
 ): Promise<string[]> {
 	// Find files and directories to process
 	let foundItems: string[] = [];
@@ -74,7 +74,7 @@ export async function copySharedFiles(
 		if (interactive) {
 			const itemType = isDirectory ? "directory" : "file";
 			const copyResponse = await prompt(
-				`Copy ${itemType} "${itemName}"? (y/n): `,
+				`Copy ${itemType} "${itemName}"? (y/n): `
 			);
 			shouldCopy = copyResponse.toLowerCase().startsWith("y");
 
@@ -89,7 +89,7 @@ export async function copySharedFiles(
 		if (interactive) {
 			const defaultPath = finalPath;
 			const customPath = await prompt(
-				`Destination (default: ${defaultPath}): `,
+				`Destination (default: ${defaultPath}): `
 			);
 			finalPath = customPath || defaultPath;
 		}

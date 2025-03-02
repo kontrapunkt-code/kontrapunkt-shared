@@ -5,6 +5,7 @@
 	},
 	"description": "Shared configuration files, directories, and utilities for Kontrapunkt projects",
 	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
 		"@types/bun": "^1.2.4",
 		"typescript": "^5.7.3"
 	},
